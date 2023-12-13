@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+from setuptools.command.install import install
 
 class PostInstallCommand(install):
     def run(self):
