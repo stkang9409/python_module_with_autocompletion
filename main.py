@@ -1,26 +1,17 @@
 def main():
-    # Define the pm function
-    pm_function = """
-pm() {
+    if len(sys.argv) < 2:
+        print("Usage: python -m your_package_name <script_path>")
+        sys.exit(1)
+
+    script_path = sys.argv[1]
+
     # Replace slashes with dots and remove the '.py' extension
-    module_path=$(echo "$1" | sed 's/\//./g' | sed 's/\\.py$//')
+    module_path = script_path.replace('/', '.').replace('.py', '')
+
     # Run the Python module
-    python3 -m "$module_path"
-}
-"""
+    try:
+        subprocess.run(['python3', '-m', module_path], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error running module {module_path}: {e}")
+        sys.exit(1)
 
-    # Determine which shell configuration file to use
-    shell_config_file = '~/.zshrc' if os.path.exists(os.path.expanduser('~/.zshrc')) else '~/.bashrc'
-    shell_config_file_path = os.path.expanduser(shell_config_file)
-
-    # Check if pm function already exists
-    with open(shell_config_file_path, 'r') as file:
-        if ' pm()' in file.read():
-            print(f"Error: 'pm' function already exists in {shell_config_file}")
-            sys.exit(1)
-
-    # Append the pm function to the shell configuration file
-    with open(shell_config_file_path, 'a') as file:
-        file.write(pm_function)
-
-    print(f"'pm' function added to {shell_config_file}. Please run 'source {shell_config_file}' to activate it.")
