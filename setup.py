@@ -13,7 +13,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'pm=python_module_with_autocompletion.main:main',
+            'pm=main:main',
         ],
     },
     # Add other necessary information here
